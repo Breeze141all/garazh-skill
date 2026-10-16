@@ -1,0 +1,17 @@
+{
+ "model": "fish-audio/drama-3",
+ "voice": "7076e45ce3234fd49ef40ffbd5a3f0cd",
+ "text": "[сухо] Так.",
+ "v": 3,
+ "dur": 1.175,
+ "speech": [
+  [
+   0.099,
+   0.737
+  ]
+ ],
+ "breath": [],
+ "lufs": -12.1,
+ "gain": -3.9,
+ "transcript": "Так."
+}

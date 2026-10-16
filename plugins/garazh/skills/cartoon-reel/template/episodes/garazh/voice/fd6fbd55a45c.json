@@ -1,0 +1,17 @@
+{
+ "model": "fish-audio/drama-3",
+ "voice": "7076e45ce3234fd49ef40ffbd5a3f0cd",
+ "text": "[резко] Толян!",
+ "v": 3,
+ "dur": 1.123,
+ "speech": [
+  [
+   0.127,
+   0.644
+  ]
+ ],
+ "breath": [],
+ "lufs": -11.3,
+ "gain": -4.7,
+ "transcript": "Итальян."
+}

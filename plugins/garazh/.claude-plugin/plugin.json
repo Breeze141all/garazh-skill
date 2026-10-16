@@ -1,0 +1,8 @@
+{
+  "name": "garazh",
+  "description": "Make vertical cartoon reels (720×1280@30, 8–90 s) from your own story: SVG scenes rendered in headless Chrome, ffmpeg, procedural foley, optional TTS voice-over",
+  "author": { "name": "lubluniky" },
+  "version": "1.0.0",
+  "license": "MIT",
+  "keywords": ["animation", "cartoon", "reels", "video", "svg", "tts", "skill"]
+}

@@ -1,0 +1,79 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  html, body { margin: 0; background: #000; }
+  #stage { position: relative; width: 720px; height: 1280px; overflow: hidden; background: #1a120c; }
+  #cam { position: absolute; left: 0; top: 0; width: 720px; height: 1280px; transform-origin: 0 0; }
+  #cam svg { display: block; }
+  /* тёплая плёнка поверх всего кадра — половина «лука» */
+  #warm { position: absolute; inset: 0; background: rgba(255,170,80,.22); mix-blend-mode: soft-light; pointer-events: none; }
+  #haze { position: absolute; inset: 0; background: radial-gradient(ellipse at 45% 30%, rgba(255,210,140,.18), transparent 60%); mix-blend-mode: screen; }
+  #vignette { position: absolute; inset: 0; background: radial-gradient(ellipse 75% 62% at 50% 46%, transparent 52%, rgba(22,12,6,.55) 82%, rgba(10,5,2,.85) 100%); }
+  #flicker { position: absolute; inset: 0; background: #fff3d8; mix-blend-mode: overlay; }
+  .grain { position: absolute; inset: 0; width: 720px; height: 1280px; opacity: .16; mix-blend-mode: overlay; display: none; }
+  #ui { position: absolute; inset: 0; }
+  .sub { position: absolute; left: 50%; top: 1112px; white-space: nowrap; transform-origin: 50% 50%;
+         background: rgba(26,20,16,.9); border-radius: 9px; padding: 10px 21px 12px;
+         font: 800 34px/1 Rubik, sans-serif; color: #fff; box-shadow: 0 4px 0 rgba(0,0,0,.35); letter-spacing: .2px; }
+  .sub .hl { color: #ffc93a; }
+  .badge { position: absolute; transform-origin: 30% 100%; background: #fbf6ea; border: 5px solid #2a1c14; border-radius: 12px;
+           padding: 12px 18px 14px; box-shadow: 6px 7px 0 rgba(20,12,6,.55); text-align: center; }
+  .badge .name { font: 400 60px/1 Pangolin, sans-serif; color: #2a1c14; letter-spacing: 2px; -webkit-text-stroke: 2.2px #2a1c14; }
+  .badge .role { margin-top: 10px; display: inline-block; padding: 6px 14px; border: 3px solid #2a1c14; border-radius: 6px;
+                 font: 700 19px/1 'JetBrains Mono', monospace; color: #2a1c14; letter-spacing: 1px; }
+</style></head>
+<body>
+<div id="stage">
+  <div id="cam"></div>
+  <div id="warm"></div><div id="haze"></div>
+  <div id="ui"></div>
+  <div id="vignette"></div>
+  <div id="flicker"></div>
+  <div id="grains"></div>
+</div>
+<script>
+  // Эпизод выбирается через ?ep=<имя> (render.mjs --ep), по умолчанию tolyan: episodes/<ep>/timeline.js.
+  // Порядок важен: lib → rig → timeline (данные) → озвучка (voice.js) → общие персонажи/пропы/сеты → доп. скрипты эпизода (TIMELINE.scripts) → presets → overlays → render.
+  // document.write держит классические скрипты синхронными и в порядке объявления.
+  const EP_QUERY = new URLSearchParams(location.search);
+  const EP = (EP_QUERY.get('ep') || 'tolyan').replace(/[^\w-]/g, '');
+  ['src/lib.js', 'src/rig.js', `episodes/${EP}/timeline.js`].forEach(s => document.write(`<script src="${s}"><\/script>`));
+</script>
+<script>
+  // озвучка: episodes/<ep>/voice.js (VOICE) генерируется voice/build.mjs из TIMELINE.voice. Файла может не быть —
+  // тогда render.mjs передаёт ?voice=0 (битый <script src> на file:// иначе считается ошибкой рендера) и ролик идёт без озвучки.
+  if (typeof TIMELINE === 'object' && TIMELINE.voice && EP_QUERY.get('voice') !== '0') document.write(`<script src="episodes/${EP}/voice.js"><\/script>`);
+  // общая библиотека: персонажи (Толян, Палыч, Санёк), предметы (чайник/кружка/телефон/лампа…), сеты (garage, screen, chat, stage, garazh)
+  // Порядок: palych.js объявляет kEye (глаза) для sanek.js; props/garage-props.js — функции предметов для registry.js и sets/garazh.js
+  ['src/characters/tolyan-head.js', 'src/characters/tolyan.js', 'src/characters/palych.js', 'src/characters/sanek.js',
+   'src/props/garage-props.js', 'src/props/registry.js',
+   'src/sets/garage.js', 'src/sets/screen.js', 'src/sets/chat.js', 'src/sets/stage.js', 'src/sets/garazh.js']
+    .forEach(s => document.write(`<script src="${s}"><\/script>`));
+</script>
+<script>
+  // файлы, объявленные эпизодом (пути от корня проекта), например новые сеты/персонажи в episodes/<ep>/
+  (typeof TIMELINE === 'object' && TIMELINE.scripts || []).forEach(s => document.write(`<script src="${s}"><\/script>`));
+</script>
+<script src="src/presets.js"></script>
+<script src="src/overlays.js"></script>
+<script src="src/render.js"></script>
+<script>
+  // зерно: 6 детерминированных тайлов, меняются каждый кадр
+  (function () {
+    const host = document.getElementById('grains');
+    for (let k = 0; k < 6; k++) {
+      const c = document.createElement('canvas'); c.width = 360; c.height = 640; c.className = 'grain';
+      const ctx = c.getContext('2d'), img = ctx.createImageData(360, 640);
+      let s = 1234 + k * 999;
+      for (let i = 0; i < img.data.length; i += 4) {
+        s = (s * 16807) % 2147483647; const v = 128 + ((s / 2147483647) - .5) * 255;
+        img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255;
+      }
+      ctx.putImageData(img, 0, 0); host.appendChild(c);
+    }
+  })();
+  const q = new URLSearchParams(location.search);
+  render(parseFloat(q.get('t') || '0'));
+</script>
+</body></html>

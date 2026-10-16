@@ -1,0 +1,12 @@
+{
+  "name": "garazh-skill",
+  "owner": { "name": "lubluniky" },
+  "description": "Code-rendered vertical cartoon reels in the «garage IT-startup» style for Claude Code",
+  "plugins": [
+    {
+      "name": "garazh",
+      "source": "./plugins/garazh",
+      "description": "Skill + engine: write a script, draw characters, voice them (Fish Audio / OpenRouter TTS) and render a 720×1280 cartoon reel with Claude Code"
+    }
+  ]
+}

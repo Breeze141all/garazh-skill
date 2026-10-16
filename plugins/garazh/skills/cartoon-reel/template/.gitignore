@@ -1,0 +1,8 @@
+.env
+node_modules/
+out/
+.frames/
+sfx/.tmp/
+episodes/*/voice/mix.wav
+.lineup.html
+.DS_Store

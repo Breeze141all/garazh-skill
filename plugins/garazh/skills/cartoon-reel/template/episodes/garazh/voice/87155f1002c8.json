@@ -1,0 +1,17 @@
+{
+ "model": "fish-audio/drama-3",
+ "voice": "6ada82e315e648b6a30a2e2210844cbf",
+ "text": "[не отрываясь от телефона] А идея?",
+ "v": 3,
+ "dur": 1.175,
+ "speech": [
+  [
+   0.129,
+   1.175
+  ]
+ ],
+ "breath": [],
+ "lufs": -9.5,
+ "gain": -6.5,
+ "transcript": "А идея?"
+}

@@ -1,0 +1,17 @@
+{
+ "model": "fish-audio/drama-3",
+ "voice": "b4b3cd5e89cc4fb682301b43e627d5ef",
+ "text": "[с достоинством] Это чай.",
+ "v": 3,
+ "dur": 1.515,
+ "speech": [
+  [
+   0.134,
+   1.165
+  ]
+ ],
+ "breath": [],
+ "lufs": -19.3,
+ "gain": 3.3,
+ "transcript": "Это чай."
+}

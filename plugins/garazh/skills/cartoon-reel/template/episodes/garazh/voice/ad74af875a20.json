@@ -1,0 +1,17 @@
+{
+ "model": "fish-audio/drama-3",
+ "voice": "b4b3cd5e89cc4fb682301b43e627d5ef",
+ "text": "[сонно, ровно] Я чай хотел.",
+ "v": 3,
+ "dur": 2.142,
+ "speech": [
+  [
+   0.102,
+   1.69
+  ]
+ ],
+ "breath": [],
+ "lufs": -20.2,
+ "gain": 4.2,
+ "transcript": "Я чай хотел."
+}

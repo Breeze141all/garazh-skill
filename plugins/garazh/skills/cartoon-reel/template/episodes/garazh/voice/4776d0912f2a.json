@@ -1,0 +1,17 @@
+{
+ "model": "fish-audio/drama-3",
+ "voice": "7076e45ce3234fd49ef40ffbd5a3f0cd",
+ "text": "[торжественно] Запускай.",
+ "v": 3,
+ "dur": 1.829,
+ "speech": [
+  [
+   0.155,
+   1.132
+  ]
+ ],
+ "breath": [],
+ "lufs": -11.8,
+ "gain": -4.2,
+ "transcript": "Запускай."
+}

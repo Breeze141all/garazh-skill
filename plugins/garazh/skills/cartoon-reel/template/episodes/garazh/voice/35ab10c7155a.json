@@ -1,0 +1,17 @@
+{
+ "model": "fish-audio/drama-3",
+ "voice": "7076e45ce3234fd49ef40ffbd5a3f0cd",
+ "text": "[резко, громко, по слогам] То-лян!",
+ "v": 3,
+ "dur": 1.698,
+ "speech": [
+  [
+   0.098,
+   1.301
+  ]
+ ],
+ "breath": [],
+ "lufs": -8.8,
+ "gain": -7.2,
+ "transcript": "Толян!"
+}

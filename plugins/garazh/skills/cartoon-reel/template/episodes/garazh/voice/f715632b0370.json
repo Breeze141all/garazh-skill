@@ -1,0 +1,17 @@
+{
+ "model": "fish-audio/drama-3",
+ "voice": "6ada82e315e648b6a30a2e2210844cbf",
+ "text": "[шёпотом] Четвёртый.",
+ "v": 3,
+ "dur": 1.593,
+ "speech": [
+  [
+   0.459,
+   0.978
+  ]
+ ],
+ "breath": [],
+ "lufs": -25.8,
+ "gain": 9.8,
+ "transcript": "Четвёртый."
+}

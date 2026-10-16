@@ -1,0 +1,17 @@
+{
+ "model": "fish-audio/drama-3",
+ "voice": "b4b3cd5e89cc4fb682301b43e627d5ef",
+ "text": "[тихо, с гордостью] Не выбило.",
+ "v": 3,
+ "dur": 1.515,
+ "speech": [
+  [
+   0.135,
+   1.167
+  ]
+ ],
+ "breath": [],
+ "lufs": -23.1,
+ "gain": 7.1,
+ "transcript": "Не выбило."
+}

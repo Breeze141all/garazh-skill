@@ -1,0 +1,17 @@
+{
+ "model": "fish-audio/drama-3",
+ "voice": "7076e45ce3234fd49ef40ffbd5a3f0cd",
+ "text": "Дальше.",
+ "v": 3,
+ "dur": 1.175,
+ "speech": [
+  [
+   0.105,
+   0.697
+  ]
+ ],
+ "breath": [],
+ "lufs": -9.6,
+ "gain": -6.4,
+ "transcript": "Дальше."
+}

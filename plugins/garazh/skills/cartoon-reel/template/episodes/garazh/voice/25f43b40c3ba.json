@@ -1,0 +1,17 @@
+{
+ "model": "fish-audio/drama-3",
+ "voice": "b4b3cd5e89cc4fb682301b43e627d5ef",
+ "text": "[ревниво] Он занят.",
+ "v": 3,
+ "dur": 1.541,
+ "speech": [
+  [
+   0.124,
+   1.119
+  ]
+ ],
+ "breath": [],
+ "lufs": -18.7,
+ "gain": 2.7,
+ "transcript": "Он занят."
+}

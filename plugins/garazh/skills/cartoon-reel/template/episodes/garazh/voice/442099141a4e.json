@@ -1,0 +1,17 @@
+{
+ "model": "fish-audio/drama-3",
+ "voice": "7076e45ce3234fd49ef40ffbd5a3f0cd",
+ "text": "[устало] Долларов, блядь.",
+ "v": 3,
+ "dur": 2.351,
+ "speech": [
+  [
+   0.115,
+   2.031
+  ]
+ ],
+ "breath": [],
+ "lufs": -12.8,
+ "gain": -3.2,
+ "transcript": "Долларов, блядь."
+}

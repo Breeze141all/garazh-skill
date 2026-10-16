@@ -1,0 +1,17 @@
+{
+ "model": "fish-audio/drama-3",
+ "voice": "6ada82e315e648b6a30a2e2210844cbf",
+ "text": "[осторожно] А миллион?",
+ "v": 3,
+ "dur": 1.306,
+ "speech": [
+  [
+   0.118,
+   0.828
+  ]
+ ],
+ "breath": [],
+ "lufs": -12.2,
+ "gain": -3.8,
+ "transcript": "А миллион?"
+}
