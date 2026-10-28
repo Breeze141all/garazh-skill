@@ -31,7 +31,7 @@ const TIMELINE = {
   ],
 
   badges: [
-    { from: 0.5, to: 4.8, name: 'MR. FREEMAN', role: 'PART 0', color: '#000000', x: 30, y: 160, rot: -3 },
+    { from: 0.5, to: 4.8, name: 'THE NOBODY', role: 'PART 0 · BIO-MASS', color: '#000000', x: 30, y: 160, rot: -3 },
     { from: 38.5, to: 44.0, name: 'ILLUSION', role: 'CHOOSE TO CONSUME', color: '#000000', x: 30, y: 160, rot: 3 },
   ],
 

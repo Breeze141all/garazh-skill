@@ -1,15 +1,15 @@
-// ─── freeman_character.js: Персонаж Mr. Freeman (Toonbox канон) ─────────────
-// Черно-белый векторный силуэт, выразительные овальные глаза, стреловидные пальцы,
-// агрессивная жестикуляция прямо в камеру (ломка четвертой стены).
+// ─── freeman_character.js: Персонаж «The Nobody» (Пан Ніхто) ───────────────
+// Черно-белый векторный силуэт в пальто с острым поднятым воротником,
+// лицо-маска с мигающим курсором терминала, волновой рот-осциллограф,
+// резкая агрессивная жестикуляция прямо в камеру (ломка четвертой стены).
 
-// Отключаем теплые пленочные фильтры гаража для достижения строгого бинарного монохрома
 (function() {
   const warm = document.getElementById('warm'); if (warm) warm.style.display = 'none';
   const haze = document.getElementById('haze'); if (haze) haze.style.display = 'none';
   const vig = document.getElementById('vignette'); if (vig) vig.style.display = 'none';
 })();
 
-function drawFreeman(t, x, y, s, opts = {}) {
+function drawNobody(t, x, y, s, opts = {}) {
   const {
     pose = 'point',
     mouth = 'talk',
@@ -27,109 +27,112 @@ function drawFreeman(t, x, y, s, opts = {}) {
 
   const bob = Math.sin(t * 8) * 3;
   const talkMouth = Math.sin(t * 32) > -0.2;
+  const cursorBlink = Math.floor(t * 3) % 2 === 0;
 
-  // Глаза Фримена: крупные овалы с черными точками-зрачками
-  const eyeR = 26 + shock * 6;
+  // Очи/глифы The Nobody: минималистичные прицелы/овалы
+  const eyeR = 24 + shock * 6;
   const pupilR = shock > 0.5 ? 4 : 7;
+  
   const eyeL = `
     <g transform="translate(-32,-15)">
-      <ellipse cx="0" cy="0" rx="${eyeR}" ry="${eyeR * 1.25}" fill="${bg}" stroke="${fg}" stroke-width="4.5"/>
-      <circle cx="${eyeLookX * 10}" cy="${eyeLookY * 8}" r="${pupilR}" fill="${fg}"/>
-      <!-- Блик -->
-      <circle cx="${eyeLookX * 10 - 2}" cy="${eyeLookY * 8 - 2}" r="2" fill="${bg}"/>
+      <ellipse cx="0" cy="0" rx="${eyeR}" ry="${eyeR * 1.2}" fill="${bg}" stroke="${fg}" stroke-width="4.5"/>
+      <circle cx="${eyeLookX * 8}" cy="${eyeLookY * 6}" r="${pupilR}" fill="${fg}"/>
+      <!-- Перекрестье визира -->
+      <line x1="${-eyeR + 4}" y1="0" x2="${eyeR - 4}" y2="0" stroke="${fg}" stroke-width="1.8" opacity="0.4"/>
     </g>
   `;
   const eyeR_svg = `
     <g transform="translate(32,-15)">
-      <ellipse cx="0" cy="0" rx="${eyeR}" ry="${eyeR * 1.25}" fill="${bg}" stroke="${fg}" stroke-width="4.5"/>
-      <circle cx="${eyeLookX * 10}" cy="${eyeLookY * 8}" r="${pupilR}" fill="${fg}"/>
-      <!-- Блик -->
-      <circle cx="${eyeLookX * 10 - 2}" cy="${eyeLookY * 8 - 2}" r="2" fill="${bg}"/>
+      <ellipse cx="0" cy="0" rx="${eyeR}" ry="${eyeR * 1.2}" fill="${bg}" stroke="${fg}" stroke-width="4.5"/>
+      <circle cx="${eyeLookX * 8}" cy="${eyeLookY * 6}" r="${pupilR}" fill="${fg}"/>
+      <!-- Перекрестье визира -->
+      <line x1="${-eyeR + 4}" y1="0" x2="${eyeR - 4}" y2="0" stroke="${fg}" stroke-width="1.8" opacity="0.4"/>
     </g>
   `;
 
-  // Брови: подвижные черные дуги
-  const browAngle = shock > 0.4 ? -15 : (tilt * 2);
+  // Брови The Nobody
   const brows = `
     <path d="M-55,${-50 - shock * 12} Q-32,${-62 - shock * 12} -12,${-48 - shock * 12}" stroke="${fg}" stroke-width="6" fill="none" stroke-linecap="round"/>
     <path d="M12,${-48 - shock * 12} Q32,${-62 - shock * 12} 55,${-50 - shock * 12}" stroke="${fg}" stroke-width="6" fill="none" stroke-linecap="round"/>
   `;
 
-  // Рот Фримена
+  // Рот The Nobody: в режиме речи — звуковая осциллограмма / импульс
   let mouthSvg = '';
   if (mouth === 'talk') {
     if (talkMouth) {
+      // Осциллографная звуковая волна
+      const wave = [-18, -12, -6, 0, 6, 12, 18].map(wx => {
+        const wy = Math.sin(wx * 0.4 + t * 45) * 12;
+        return `L${wx},${38 + wy}`;
+      }).join(' ');
       mouthSvg = `
-        <ellipse cx="0" cy="38" rx="22" ry="${14 + Math.abs(Math.sin(t * 16)) * 10}" fill="${fg}"/>
-        <!-- Язык / зубы -->
-        <path d="M-15,32 Q0,38 15,32" stroke="${bg}" stroke-width="3" fill="none"/>
+        <ellipse cx="0" cy="38" rx="22" ry="12" fill="${fg}"/>
+        <path d="M-22,38 ${wave} L22,38" stroke="${bg}" stroke-width="2.5" fill="none"/>
       `;
     } else {
-      mouthSvg = `<path d="M-20,38 Q0,42 20,36" stroke="${fg}" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+      // Курсор терминала > _
+      mouthSvg = `
+        <g transform="translate(-14,34)">
+          <path d="M0,0 L6,5 L0,10" stroke="${fg}" stroke-width="3" fill="none"/>
+          ${cursorBlink ? `<line x1="12" y1="10" x2="24" y2="10" stroke="${fg}" stroke-width="3"/>` : ''}
+        </g>
+      `;
     }
   } else if (mouth === 'grin') {
-    // Циничная кривая ухмылка
+    // Циничный оскал The Nobody
     mouthSvg = `
-      <path d="M-28,34 Q-5,48 32,24" stroke="${fg}" stroke-width="5.5" fill="none" stroke-linecap="round"/>
-      <line x1="32" y1="24" x2="36" y2="18" stroke="${fg}" stroke-width="4"/>
+      <path d="M-30,34 Q-5,50 34,22" stroke="${fg}" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+      <line x1="34" y1="22" x2="38" y2="16" stroke="${fg}" stroke-width="4"/>
     `;
   } else if (mouth === 'yell') {
-    // Крик / яростный оскал
+    // Крик в камеру
     mouthSvg = `
-      <polygon points="-35,25 35,25 28,65 -28,65" fill="${fg}" stroke="${fg}" stroke-width="4"/>
-      <!-- зубы -->
-      <path d="M-30,30 L30,30" stroke="${bg}" stroke-width="6"/>
-      <path d="M-24,58 L24,58" stroke="${bg}" stroke-width="6"/>
+      <polygon points="-36,25 36,25 28,66 -28,66" fill="${fg}" stroke="${fg}" stroke-width="4"/>
+      <path d="M-30,30 L30,30 M-24,60 L24,60" stroke="${bg}" stroke-width="6"/>
     `;
   } else {
-    // Нейтральная линия
-    mouthSvg = `<line x1="-18" y1="38" x2="18" y2="38" stroke="${fg}" stroke-width="4.5" stroke-linecap="round"/>`;
+    // Минималистичный курсор в покое
+    mouthSvg = `
+      <g transform="translate(-14,34)">
+        <path d="M0,0 L6,5 L0,10" stroke="${fg}" stroke-width="3" fill="none"/>
+        ${cursorBlink ? `<line x1="12" y1="10" x2="24" y2="10" stroke="${fg}" stroke-width="3"/>` : ''}
+      </g>
+    `;
   }
 
-  // Руки и позы (жесты Фримена)
+  // Руки и позы The Nobody
   let armsSvg = '';
   if (pose === 'point') {
-    // Канонический жест: указательный палец тычет прямо в экран (в зрителя)
     armsSvg = `
-      <!-- Левая рука приподнята сбоку -->
-      <path d="M-40,110 Q-80,140 -90,190" stroke="${fg}" stroke-width="14" fill="none" stroke-linecap="round"/>
-      <!-- Правая рука направлена вперед: гигантский указательный палец в ракурсе -->
+      <path d="M-40,110 Q-80,140 -90,190" stroke="${fg}" stroke-width="15" fill="none" stroke-linecap="round"/>
       <g transform="translate(60,110)">
         <path d="M0,0 Q60,30 90,60" stroke="${fg}" stroke-width="18" fill="none" stroke-linecap="round"/>
-        <!-- Кисть, указывающая в зрителя (ракурс) -->
         <g transform="translate(90,60) scale(1.4)">
           <ellipse cx="0" cy="0" rx="20" ry="16" fill="${fg}"/>
-          <!-- Вытянутый указательный палец -->
-          <path d="M5,-8 L38,-15 C45,-15 45,5 35,5 L5,5 Z" fill="${fg}"/>
-          <!-- согнутые пальцы -->
+          <path d="M5,-8 L40,-15 C46,-15 46,5 36,5 L5,5 Z" fill="${fg}"/>
           <ellipse cx="-4" cy="6" rx="8" ry="6" fill="${bg}" stroke="${fg}" stroke-width="3"/>
           <ellipse cx="6" cy="7" rx="8" ry="6" fill="${bg}" stroke="${fg}" stroke-width="3"/>
         </g>
       </g>
     `;
   } else if (pose === 'shrug') {
-    // Руки разведены в стороны в саркастичном недоумении
     armsSvg = `
-      <path d="M-40,110 Q-110,90 -160,60" stroke="${fg}" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <path d="M-40,110 Q-110,90 -160,60" stroke="${fg}" stroke-width="15" fill="none" stroke-linecap="round"/>
       <polygon points="-160,60 -185,45 -175,75" fill="${fg}"/>
-      <path d="M40,110 Q110,90 160,60" stroke="${fg}" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <path d="M40,110 Q110,90 160,60" stroke="${fg}" stroke-width="15" fill="none" stroke-linecap="round"/>
       <polygon points="160,60 185,45 175,75" fill="${fg}"/>
     `;
   } else if (pose === 'headClutch') {
-    // Хватается руками за голову в приступе отчаяния от глупости биомассы
     armsSvg = `
-      <path d="M-40,120 Q-100,50 -70,-20" stroke="${fg}" stroke-width="14" fill="none" stroke-linecap="round"/>
-      <path d="M40,120 Q100,50 70,-20" stroke="${fg}" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <path d="M-40,120 Q-100,50 -70,-20" stroke="${fg}" stroke-width="15" fill="none" stroke-linecap="round"/>
+      <path d="M40,120 Q100,50 70,-20" stroke="${fg}" stroke-width="15" fill="none" stroke-linecap="round"/>
     `;
   } else if (pose === 'snap') {
-    // Щелчок пальцами перед финалом
     armsSvg = `
-      <path d="M-30,110 Q-50,160 -40,210" stroke="${fg}" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <path d="M-30,110 Q-50,160 -40,210" stroke="${fg}" stroke-width="15" fill="none" stroke-linecap="round"/>
       <g transform="translate(40,110)">
-        <path d="M0,0 Q30,-40 50,-80" stroke="${fg}" stroke-width="14" fill="none" stroke-linecap="round"/>
-        <!-- Рука в щелчке -->
+        <path d="M0,0 Q30,-40 50,-80" stroke="${fg}" stroke-width="15" fill="none" stroke-linecap="round"/>
         <circle cx="50" cy="-80" r="14" fill="${fg}"/>
-        <!-- искры щелчка -->
         ${snapProgress > 0 ? `
           <line x1="50" y1="-105" x2="50" y2="-120" stroke="${fg}" stroke-width="4"/>
           <line x1="70" y1="-95" x2="85" y2="-105" stroke="${fg}" stroke-width="4"/>
@@ -138,33 +141,36 @@ function drawFreeman(t, x, y, s, opts = {}) {
       </g>
     `;
   } else {
-    // Свободные опущенные руки
     armsSvg = `
-      <path d="M-40,110 Q-70,180 -60,250" stroke="${fg}" stroke-width="14" fill="none" stroke-linecap="round"/>
-      <path d="M40,110 Q70,180 60,250" stroke="${fg}" stroke-width="14" fill="none" stroke-linecap="round"/>
+      <path d="M-40,110 Q-70,180 -60,250" stroke="${fg}" stroke-width="15" fill="none" stroke-linecap="round"/>
+      <path d="M40,110 Q70,180 60,250" stroke="${fg}" stroke-width="15" fill="none" stroke-linecap="round"/>
     `;
   }
 
   return `
   <g transform="translate(${x},${y + bob}) scale(${s})">
-    <!-- Руки -->
     ${armsSvg}
 
-    <!-- Тело: лаконичный черный силуэт торса -->
-    <path d="M-42,100 C-50,150 -45,240 -35,320 L35,320 C45,240 50,150 42,100 Z" fill="${fg}"/>
+    <!-- Силуэт пальто / плаща The Nobody с поднятым воротником -->
+    <path d="M-45,100 C-55,160 -50,250 -40,330 L40,330 C50,250 55,160 45,100 Z" fill="${fg}"/>
+    
+    <!-- Поднятый воротник-лацканы The Nobody -->
+    <polygon points="-45,90 -65,30 -20,70" fill="${fg}"/>
+    <polygon points="45,90 65,30 20,70" fill="${fg}"/>
+    <line x1="-20" y1="70" x2="0" y2="140" stroke="${bg}" stroke-width="3"/>
+    <line x1="20" y1="70" x2="0" y2="140" stroke="${bg}" stroke-width="3"/>
+    
     <!-- Ноги (силуэт) -->
-    <path d="M-26,320 L-30,460 M26,320 L30,460" stroke="${fg}" stroke-width="16" stroke-linecap="round"/>
+    <path d="M-26,330 L-30,470 M26,330 L30,470" stroke="${fg}" stroke-width="18" stroke-linecap="round"/>
 
     <!-- Шея -->
     <rect x="-12" y="70" width="24" height="35" fill="${fg}"/>
 
-    <!-- Голова (наклоняется на tilt градусов) -->
+    <!-- Лицо The Nobody -->
     <g transform="translate(0,10) rotate(${tilt})">
-      <!-- Овал головы с заостренным подбородком -->
       <path d="M-70,-10 C-70,-75 -50,-95 0,-95 C50,-95 70,-75 70,-10 C70,55 45,75 0,78 C-45,75 -70,55 -70,-10 Z" 
             fill="${bg}" stroke="${fg}" stroke-width="6"/>
 
-      <!-- Брови, Глаза, Рот -->
       ${brows}
       ${eyeL}
       ${eyeR_svg}
@@ -173,4 +179,5 @@ function drawFreeman(t, x, y, s, opts = {}) {
   </g>`;
 }
 
-window.drawFreeman = drawFreeman;
+window.drawNobody = drawNobody;
+window.drawFreeman = drawNobody; // обратная совместимость
