@@ -41,6 +41,11 @@
   ['src/lib.js', 'src/rig.js', `episodes/${EP}/timeline.js`].forEach(s => document.write(`<script src="${s}"><\/script>`));
 </script>
 <script>
+  if (typeof TIMELINE === 'object' && TIMELINE.noOverlays) {
+    document.write('<style>#warm,#haze,#vignette,#flicker,#grains{display:none!important}#stage{background:#ded072!important}</style>');
+  }
+</script>
+<script>
   // озвучка: episodes/<ep>/voice.js (VOICE) генерируется voice/build.mjs из TIMELINE.voice. Файла может не быть —
   // тогда render.mjs передаёт ?voice=0 (битый <script src> на file:// иначе считается ошибкой рендера) и ролик идёт без озвучки.
   if (typeof TIMELINE === 'object' && TIMELINE.voice && EP_QUERY.get('voice') !== '0') document.write(`<script src="episodes/${EP}/voice.js"><\/script>`);
